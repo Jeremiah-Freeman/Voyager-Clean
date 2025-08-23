@@ -3,20 +3,21 @@ import SwiftUI
 struct RootView: View {
     @State private var showMain = false
 
+    // create the stores here once
+    @StateObject private var placeStore  = PlaceStore()
+    @StateObject private var searchStore = SearchStore()
+
     var body: some View {
         Group {
             if showMain {
-                HomeView()
+                ContentView()               // <-- use the already-wired screen
+                    .environmentObject(placeStore)
+                    .environmentObject(searchStore)
             } else {
-                SplashView()
-                    .task {
-                        try? await Task.sleep(nanoseconds: 2_400_000_000)
-                        withAnimation { showMain = true }
-                    }
+                SplashView {
+                    withAnimation { showMain = true }
+                }
             }
         }
-        // pass your environment objects here if you create them at the top level
-        .environmentObject(PlaceStore())
-        .environmentObject(SearchStore())
     }
 }
