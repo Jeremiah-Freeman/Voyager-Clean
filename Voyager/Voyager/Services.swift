@@ -56,6 +56,7 @@ final class SpeechService: NSObject, ObservableObject {
     @Published var transcript: String = ""
     @Published var isListening = false
     @Published var authStatus: SFSpeechRecognizerAuthorizationStatus = .notDetermined
+    @Published var level: Float = 0.0   // 0...1 mic loudness for UI
 
     private let recognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))
     private let audioEngine = AVAudioEngine()
@@ -104,6 +105,24 @@ final class SpeechService: NSObject, ObservableObject {
         input.removeTap(onBus: 0)
         input.installTap(onBus: 0, bufferSize: 1024, format: format) { [weak self] buf, _ in
             self?.request?.append(buf)
+            // Compute simple RMS-based level for waveform UI
+            if let ch = buf.floatChannelData?[0] {
+                let frames = Int(buf.frameLength)
+                if frames > 0 {
+                    var sum: Float = 0
+                    for i in 0..<frames {
+                        let v = ch[i]
+                        sum += v * v
+                    }
+                    let rms = sqrt(sum / Float(frames))                   // 0...1-ish
+                    // Map approx dBFS (-50..0) to 0..1, clamp edges
+                    let db = 20 * log10(max(rms, 1e-7))
+                    let norm = min(max((db + 50) / 50, 0), 1)
+                    DispatchQueue.main.async {
+                        self?.level = norm
+                    }
+                }
+            }
         }
 
         audioEngine.prepare()
@@ -127,5 +146,6 @@ final class SpeechService: NSObject, ObservableObject {
         request?.endAudio()
         task?.cancel()
         isListening = false
+        level = 0
     }
 }
