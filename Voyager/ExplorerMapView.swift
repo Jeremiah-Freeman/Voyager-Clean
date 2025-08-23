@@ -1,6 +1,25 @@
 import SwiftUI
 import MapKit
 import CoreLocation
+import MapKit
+
+enum MapTheme: String, CaseIterable, Identifiable {
+    case standard, muted, hybrid, satellite
+    var id: String { rawValue }
+}
+
+private func style(for theme: MapTheme) -> MapStyle {
+    switch theme {
+    case .standard:
+        return .standard
+    case .muted:
+        return .standard(emphasis: .muted)
+    case .hybrid:
+        return .hybrid
+    case .satellite:
+        return .imagery
+    }
+}
 
 // Split into small subviews so the compiler can type‑check quickly.
 struct ExplorerMapView: View {
@@ -16,6 +35,7 @@ struct ExplorerMapView: View {
     @State private var position: MapCameraPosition = .userLocation(fallback: .automatic)
     @State private var selection: Place?                 // seed tap
     @State private var selectionSearch: SelectedSearch?  // search tap
+    @State private var theme: MapTheme = .muted
 
     // Lightweight selection type for search pins
     struct SelectedSearch: Identifiable {
@@ -50,6 +70,7 @@ private extension ExplorerMapView {
             MapCompass()
             MapPitchToggle()
         }
+        .mapStyle(style(for: theme))
         .onAppear { centerIfNeeded() }
         // Observe doubles (not optionals) so the equatable requirement is satisfied
         .onChange(of: centerOverride?.latitude ?? 0) { _ in centerIfNeeded() }
