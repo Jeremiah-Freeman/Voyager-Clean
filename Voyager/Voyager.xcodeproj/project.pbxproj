@@ -29,23 +29,9 @@
 		B97FD1DA2E470B5C00A50BCA /* VoyagerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VoyagerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		B97FD1EE2E470C4A00A50BCA /* Exceptions for "Voyager" folder in "Voyager" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-				Untitled.swift,
-			);
-			target = B97FD1BF2E470B5A00A50BCA /* Voyager */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		B97FD1C22E470B5A00A50BCA /* Voyager */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				B97FD1EE2E470C4A00A50BCA /* Exceptions for "Voyager" folder in "Voyager" target */,
-			);
 			path = Voyager;
 			sourceTree = "<group>";
 		};

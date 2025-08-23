@@ -24,6 +24,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B938512A2E597DC200F81C15 /* Voyager.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Voyager.xcodeproj; sourceTree = "<group>"; };
 		B97FD1C02E470B5A00A50BCA /* Voyager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Voyager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B97FD1D02E470B5C00A50BCA /* VoyagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VoyagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B97FD1DA2E470B5C00A50BCA /* VoyagerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VoyagerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -86,6 +87,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B938512C2E597DC200F81C15 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		B97FD1B72E470B5A00A50BCA = {
 			isa = PBXGroup;
 			children = (
@@ -212,6 +220,12 @@
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B97FD1C12E470B5A00A50BCA /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = B938512C2E597DC200F81C15 /* Products */;
+					ProjectRef = B938512A2E597DC200F81C15 /* Voyager.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				B97FD1BF2E470B5A00A50BCA /* Voyager */,
