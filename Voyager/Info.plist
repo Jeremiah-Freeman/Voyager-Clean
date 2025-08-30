@@ -2,7 +2,9 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>OPEN_API_KEY</key>
-	<string></string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>&quot;This app needs microphone access to listen for your commands.&quot;</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>&quot;This app needs speech recognition to process your voice commands.&quot;</string>
 </dict>
 </plist>

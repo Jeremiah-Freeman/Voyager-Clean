@@ -10,7 +10,7 @@ struct RootView: View {
     var body: some View {
         Group {
             if showMain {
-                ContentView()               // <-- use the already-wired screen
+                HomeView()               // <-- use the already-wired screen
                     .environmentObject(placeStore)
                     .environmentObject(searchStore)
             } else {
