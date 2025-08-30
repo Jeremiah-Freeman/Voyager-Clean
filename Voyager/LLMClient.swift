@@ -31,6 +31,8 @@ final class LLMClient {
         guard let k = ProcessInfo.processInfo.environment["OPENAI_API_KEY"], !k.isEmpty else {
             throw LLMError.emptyKey
         }
+        // Debug print to show masked preview of the key
+        print("[DEBUG] OPENAI_API_KEY loaded: \(k.prefix(6))…\(k.suffix(4))")
         self.apiKey = k
         self.session = URLSession(configuration: .default)
 
