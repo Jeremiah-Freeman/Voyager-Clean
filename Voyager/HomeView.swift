@@ -137,7 +137,60 @@ struct HomeView: View {
                 return
             }
 
-            // Default search with normalized query
+            // Attempt to split normalizedQuery into search term and location
+            let lowerNormalized = normalizedQuery.lowercased()
+            var searchTerm = normalizedQuery
+            var locationPart: String? = nil
+
+            // Check for " in " to split query and location
+            if let range = lowerNormalized.range(of: " in ") {
+                let before = normalizedQuery[..<range.lowerBound].trimmingCharacters(in: .whitespacesAndNewlines)
+                let after = normalizedQuery[range.upperBound...].trimmingCharacters(in: .whitespacesAndNewlines)
+                if !before.isEmpty && !after.isEmpty {
+                    searchTerm = String(before)
+                    locationPart = String(after)
+                }
+            } else {
+                // Otherwise, try to parse last word(s) as location if query has multiple words
+                let components = normalizedQuery.components(separatedBy: .whitespaces)
+                if components.count > 1 {
+                    // Assume last one or two words might be location
+                    let lastTwo = components.suffix(2).joined(separator: " ")
+                    locationPart = lastTwo
+                    searchTerm = components.dropLast(2).joined(separator: " ")
+                    if searchTerm.isEmpty {
+                        // fallback to entire query if dropping last two leaves empty
+                        searchTerm = normalizedQuery
+                        locationPart = nil
+                    }
+                }
+            }
+
+            if let location = locationPart {
+                print("[DEBUG] Attempting geocode for location: \(location)")
+                let geocoder = CLGeocoder()
+                do {
+                    let placemarks = try await geocoder.geocodeAddressString(location)
+                    if let placemark = placemarks.first, let coord = placemark.location?.coordinate {
+                        centerOverride = coord
+                        print("[DEBUG] Geocoded location coordinate: \(coord)")
+                        await searchStore.run(query: searchTerm, near: coord)
+                        if let first = searchStore.results.first {
+                            centerOverride = first.coordinate
+                            radiusMiles = 25
+                        }
+                        print("[DEBUG] Map will be shown")
+                        showMap = true
+                        return
+                    } else {
+                        print("[DEBUG] Geocoding returned no results")
+                    }
+                } catch {
+                    print("[DEBUG] Geocoding failed with error: \(error.localizedDescription)")
+                }
+            }
+
+            // Default search with normalized query near current centerOverride or location
             await searchStore.run(query: normalizedQuery, near: centerOverride ?? loc.lastLocation?.coordinate)
 
             // After search, set center/radius from first result if available
